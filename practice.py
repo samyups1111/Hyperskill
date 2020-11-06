@@ -1,46 +1,60 @@
 import random
 import string
 
-print('H A N G M A N')
 words = 'python', 'java', 'kotlin', 'javascript'
 random_word = random.choice(words)
 word = '-'.split() * len(random_word)
-lives = 8
 bank = []
-def redo(x):
-    while lives > 0:
-        if len(x) != 1:
-            print("You should input a single letter")
-            x = input(f"\n{''.join(word)}\nInput a letter: ")
-        if x.islower() == False:
-            print("Please enter a lowercase English letter")
-            x = input(f"\n{''.join(word)}\nInput a letter: ")
-        if x not in string.ascii_lowercase:
-            print("Please enter a lowercase English letter")
-            x = input(f"\n{''.join(word)}\nInput a letter: ")
-        if x in bank:
-            print("You've already guessed this letter")
-            x = input(f"\n{''.join(word)}\nInput a letter: ")
-        else:
-            bank.append(x)
-            return x
-while lives > 0:
-    if random_word in ''.join(word):
-        print(f"""\n{''.join(word)}
-You guessed the word!
-You survived!""")
-        break
-    x = input(f"\n{''.join(word)}\nInput a letter: ")
-    x = redo(x)
-    if x in random_word:
-            for n in range(len(random_word)):
-                if random_word[n] == x:
-                    word[n] = x
-                    bank.append(x)
-    else:
-        print("That letter doesn't appear in the word")
-        bank.append(x)
-        lives -= 1
 
-else:
-    print('You lost!')
+
+# Checks if we correctly guessed the whole word
+def is_word_correct(word):
+    return random_word in ''.join(word)
+
+# Returns True if valid input
+# Prints error message and returned False if invalid input
+def validate(guess):
+    if len(guess) != 1:
+        print("You should input a single letter")
+        return False
+    elif not guess.islower():
+        print("Please enter a lowercase English letter")
+        return False
+    elif guess in bank:
+        print("You've already guessed this letter")
+        return False
+    else:
+        return True
+
+# Only updates the word with the correctly guessed letter
+def update_word_with_guess(guess):
+    for n in range(len(random_word)):
+        if(random_word[n] == guess):
+            word[n] = guess
+
+# Contains the main part of the code
+print('H A N G M A N')
+lives = 8
+
+while lives > 0:
+
+    if is_word_correct(word):
+        print(f"""\n{''.join(word)}\nYou guessed the word!\nYou survived!""")
+        break;
+    else:
+
+        guess = input(f"\n{''.join(word)}\nInput a letter: ")
+
+        is_valid = validate(guess)
+
+        if not is_valid: 
+            continue
+        else:
+            bank.append(guess)
+            if guess in random_word:
+                update_word_with_guess(guess)
+            else:
+                print("\nThat letter doesn't appear in the word")
+                lives -= 1
+                if lives == 0:
+                    print('You lost!')  
