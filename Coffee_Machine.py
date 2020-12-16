@@ -45,6 +45,7 @@ def buy_coffee(item):
         machine.beans -= cappuccino.beans
         machine.money += cappuccino.money
         machine.cups -= cappuccino.cups
+
 def fill_machine():
     add_water = int(input("Write how many ml of water do you want to add:\n"))
     add_milk = int(input("Write how may ml of milk do you want to add:\n"))
@@ -55,7 +56,9 @@ def fill_machine():
     machine.beans += add_beans
     machine.cups += add_cups
     print("\n")
+
 def take_money():
+    #Owner withdraws all the money from the machine at the end of the day.
     print(f"I gave you ${machine.money}\n")
     machine.money -= machine.money
 
